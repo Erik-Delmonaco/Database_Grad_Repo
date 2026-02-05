@@ -1,0 +1,69 @@
+Find the 10 players with the most career homeruns
+    SELECT playerID, sum(HR) as careerHR
+    FROM Batting
+    GROUP BY playerID
+    ORDER BY careerHR desc
+    LIMIT 10
+
+-------------------------------------------------------------------------------
+
+Generate a year by year list of total homeruns by the Phillies
+    SELECT yearID, sum(HR) as seasonHR
+    FROM Batting
+    WHERE teamID = 'PHI'
+    GROUP BY yearID
+    ORDER BY yearID desc
+
+-------------------------------------------------------------------------------
+
+List of 2025 teams and their season homeruns
+    SELECT teamID, sum(HR) as seasonHR
+    FROM Batting
+    WHERE yearID = 2025
+    GROUP BY teamID
+    ORDER BY seasonHR desc
+
+-------------------------------------------------------------------------------
+
+List of 2025 teams with 200 or more homeruns
+    SELECT teamID, sum(HR) as seasonHR
+    FROM Batting
+    WHERE yearID = 2025
+    GROUP BY teamID
+    HAVING seasonHR >= 200
+    ORDER BY teamID
+
+-------------------------------------------------------------------------------
+
+Select everything from join between Batting and teams, limit 10
+    SELECT *
+    FROM Batting INNER JOIN teams
+    ON Batting.teamID = teams.teamID AND batting.yearID = teams.yearID
+    LIMIT 10
+
+-------------------------------------------------------------------------------
+
+List of all players from 1976 with team name
+    SELECT playerID, Batting.teamID, name
+    FROM Batting INNER JOIN teams
+    ON Batting.teamID = teams.teamID AND Batting.yearID = teams.yearID
+    WHERE Batting.yearID = 1976
+
+-------------------------------------------------------------------------------
+
+Babe Ruth's records, year, team name, and HR
+    SELECT Batting.yearID, name, Batting.HR
+    FROM Batting INNER JOIN teams
+    ON Batting.teamID = teams.teamID AND Batting.yearID = teams.yearID
+    WHERE playerID = 'ruthba01'
+    ORDER BY Batting.yearID
+
+-------------------------------------------------------------------------------
+
+Check if anyone played for more than one team in 1976
+    SELECT playerID, count(*)
+    FROM Batting
+    WHERE yearID = 1976
+    GROUP BY playerID
+    HAVING count(*) = 2
+    ORDER by count(*) desc
